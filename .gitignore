@@ -52,3 +52,4 @@ temp/
 
 # Uploads (if you store images/files locally)
 uploads/
+config/config.env
