@@ -1,21 +1,24 @@
 import pkg from "pg";
 import dotenv from "dotenv";
 
-const {Client } = pkg;
+dotenv.config({ path: "./config/config.env" }); 
+
+const { Client } = pkg;
 
 const database = new Client({
-    user:process.env.DB_USER,
-    host:process.env.DB_HOST,
-    database:process.env.DB_NAME,
-    password:process.env.DB_PASSWORD, 
-    port:process.env.DB_PORT
-})
+    user: process.env.DB_USER,
+    host: process.env.DB_HOST,
+    database: process.env.DB_NAME,
+    password: process.env.DB_PASSWORD,
+    port: process.env.DB_PORT
+});
 
-try{
+try {
     await database.connect();
-    console.log("Database is connected successfully")   
-}catch(error){
-    console.log("Database connection failed", error)
+    console.log("Database is connected successfully");
+} catch (error) {
+    console.log("Database connection failed", error);
     process.exit(1);
 }
+
 export default database;

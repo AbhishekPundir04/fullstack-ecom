@@ -1,0 +1,20 @@
+import ErrorHandler from "../middlewares/errorMiddleware.js";
+import { catchAsyncErrors } from "../middlewares/catchAsyncErrors.js";
+import database from "../database/db.js";
+
+export const registerUser = catchAsyncErrors(async (req, res, next) => {
+    const { name, email, password } = req.body;
+    if (!name || !email || !password) {
+        return next(new ErrorHandler("Please provide name, email and password", 400));
+    }
+    const isAlreadyRegistered = await database.query("SELECT * FROM users WHERE email = $1", [email]);
+    if (isAlreadyRegistered.rows.length > 0) {
+        return next(new ErrorHandler("User already registered with this email", 400));
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = await database.query("INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING *", [name, email, hashedPassword]);
+})
+
+export const login = catchAsyncErrors(async (req, res, next) => { })
+export const getUser = catchAsyncErrors(async (req, res, next) => { })
+export const logout = catchAsyncErrors(async (req, res, next) => { })
